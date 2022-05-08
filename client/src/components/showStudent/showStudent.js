@@ -21,16 +21,23 @@ export default function ShowStudent() {
   const classes = useStyles();
   const [studentsList, setStudentList] = useState([]);
 
+
   const deleteStudent = (id) => {
     axios.delete(`http://localhost:5000/students/${id}`).then(() => {
       window.location.reload(false);
     });
   };
-  useEffect(() => {
-    axios.get("http://localhost:5000/students").then((allStudents) => {
+
+  const FetchStudents = async () => {
+    await axios.get("http://localhost:5000/students").then((allStudents) => {
       setStudentList(allStudents.data);
     });
+  };
+  useEffect(() => {
+    FetchStudents()
   }, []);
+
+  console.log(studentsList)
 
   return (
     <>
@@ -47,15 +54,15 @@ export default function ShowStudent() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {studentsList.map((student, key) => (
+            {studentsList?.map((student, key) => (
               <TableRow key={key}>
                 <TableCell component="th" scope="row">
-                  {student.studentsName}
+                  {student?.studentsName}
                 </TableCell>
-                <TableCell align="right">{student.regNo}</TableCell>
-                <TableCell align="right">{student.name}</TableCell>
-                <TableCell align="right">{student.grade}</TableCell>
-                <TableCell align="right">{row.section}</TableCell>
+                <TableCell align="right">{student?.regNo}</TableCell>
+                <TableCell align="right">{student?.name}</TableCell>
+                <TableCell align="right">{student?.grade}</TableCell>
+                <TableCell align="right">{row?.section}</TableCell>
                 <TableCell align="right">
                   <IconButton
                     aria-label="delete"
